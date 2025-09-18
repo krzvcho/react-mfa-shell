@@ -1,11 +1,11 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import { Menu as MenuIcon, Dashboard, Settings } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import { Menu as MenuIcon, Dashboard, Settings, Newspaper  } from "@mui/icons-material";
+import { Link as RouterLink, Outlet } from "react-router-dom";
 
 const drawerWidth = 240;
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout() {
   const [open, setOpen] = React.useState(true);
 
   const toggleDrawer = () => {
@@ -57,11 +57,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </ListItemIcon>
             <ListItemText primary="Root" />
           </ListItem>
-          <ListItem component={RouterLink} to="/settings">
+          <ListItem component={RouterLink} to="/react-forms">
             <ListItemIcon>
-              <Settings />
+              <Newspaper />
             </ListItemIcon>
-            <ListItemText primary="Settings" />
+            <ListItemText primary="React Forms" />
           </ListItem>
           <ListItem component={RouterLink} to="/remote-app">
             <ListItemIcon>
@@ -83,7 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         }}
       >
         <Toolbar />
-        {children}
+        <Outlet />
       </Box>
     </Box>
   );

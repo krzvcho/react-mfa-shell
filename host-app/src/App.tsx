@@ -1,20 +1,22 @@
 import { RemoteComponentWrapper } from './components/RemoteComponentWrapper';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AdminLayout from './layouts/HostAppLayout';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ReactForms from './pages/ReactForms';
 import './App.css';
 
+const router = createBrowserRouter([
+  {
+    element: <AdminLayout />,
+    children: [
+      { path: '/', element: <span> root </span> },
+      { path: '/react-forms', element: <ReactForms /> },
+      { path: '/remote-app/*', element: <RemoteComponentWrapper /> },
+    ],
+  },
+]);
+
 function App() {
-  return (
-    <BrowserRouter>
-      <AdminLayout>
-        <Routes>
-          <Route path="/" element={<span> root </span>} />
-          <Route path="/settings" element={<span>settings</span>} />
-          <Route path="/remote-app" element={<RemoteComponentWrapper />} />
-        </Routes>
-      </AdminLayout>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

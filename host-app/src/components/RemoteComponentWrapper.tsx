@@ -1,15 +1,15 @@
 // host - ./src/components/RemoteComponentWrapper.tsx
 import React, { Suspense } from "react";
 
-const RemoteHeader = React.lazy(() => import("remote_app/Header"));
-const RemoteButton = React.lazy(() => import("remote_app/Button"));
+// const RemoteHeader = React.lazy(() => import("remote_app/Header"));
+// const RemoteButton = React.lazy(() => import("remote_app/Button"));
 const RemoteApp = React.lazy(() => import('remote_app/App'))
 
-const LoadingSpinner = () => (
-  <div className="flex justify-center p-4">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-  </div>
-);
+// const LoadingSpinner = () => (
+//   <div className="flex justify-center p-4">
+//     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+//   </div>
+// );
 
 export const RemoteComponentWrapper = () => {
   return (

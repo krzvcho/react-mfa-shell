@@ -1,26 +1,34 @@
-import { useState } from 'react';
 import './App.css';
-import { Button, Card, CardContent } from '@mui/material';
+// import { Card, CardContent } from '@mui/material';
+// import { styled } from '@mui/material/styles';
+// import BookList from './modules/Books/BookList';
+// import Paper from '@mui/material/Paper';
+// import Grid from '@mui/material/Grid';
+// import Header from './layout/Header';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './modules/Home/Home.tsx';
+import BookGrid from './modules/Books/BootGrid.tsx';
+import Blood from './modules/BloodPressure/Blood.tsx';
+import FormActions from './modules/FormActions/FormActions.tsx';
+import Root from './layout/Root.tsx';
 
-function App() {
-  const [count, setCount] = useState(0);
+const router = createBrowserRouter(
+  [
+    {
+      path: '/',
+      element: <Root />,
+      children: [
+        { path: '/', element: <Home /> },
+        { path: '/books', element: <BookGrid /> },
+        { path: '/blood', element: <Blood /> },
+        { path: '/formactions', element: <FormActions /> },
+      ],
+    },
+  ],
+);
 
-  return (
-    <>
-      <h1>RemoteAPP</h1>
-      <Card variant="outlined" sx={{ p: 3 }}>
-        <CardContent sx={{ p: 1 }}>
-          <Button
-            onClick={() => setCount((count) => count + 1)}
-            variant="contained"
-          >
-            {' '}
-            count is {count}
-          </Button>
-        </CardContent>
-      </Card>
-    </>
-  );
-}
+const App = () => {
+  return <RouterProvider router={router}></RouterProvider>;
+};
 
 export default App;

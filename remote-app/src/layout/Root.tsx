@@ -1,6 +1,6 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import { Outlet } from "react-router-dom";
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Header from './Header';

@@ -3,12 +3,14 @@ import { Tabs, Tab } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 // Example routes
+const isDev = import.meta.env.DEV;
 const routes = [
   { label: 'Home', path: '/' },
   { label: 'Books', path: '/books' },
   { label: 'BloodPressure', path: '/blood' },
   { label: 'FormActions', path: '/formactions' },
 ];
+const baseUrl = isDev ? '' : '/remote-app';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ const Header: React.FC = () => {
   );
 
   const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    navigate(routes[newValue].path);
+    navigate(`${baseUrl}${routes[newValue].path}`);
   };
 
   return (

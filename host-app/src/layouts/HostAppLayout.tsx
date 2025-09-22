@@ -69,6 +69,12 @@ export default function AdminLayout() {
             </ListItemIcon>
             <ListItemText primary="RemoteApp" />
           </ListItem>
+          <ListItem component={RouterLink} to="/remote-app-datarouter">
+            <ListItemIcon>
+              <Settings />
+            </ListItemIcon>
+            <ListItemText primary="RemoteAppDatarouter" />
+          </ListItem>
         </List>
       </Drawer>
 

@@ -16,3 +16,7 @@ declare module "remote_app/App" {
   const App: React.FC;
   export default App;
 }
+declare module "remote_app_datarouter/App" {
+  const App: React.FC;
+  export default App;
+}

@@ -1,3 +1,4 @@
+// remote - vite.config.js
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import federation from '@originjs/vite-plugin-federation';
@@ -6,10 +7,10 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: 'host_app',
-      remotes: {
-        remote_app: 'http://localhost:5001/assets/remoteEntry.js',
-        remote_app_datarouter: 'http://localhost:5002/assets/remoteEntry.js',
+      name: 'remote_app_datarouter',
+      filename: 'remoteEntry.js',
+      exposes: {
+        './App': './src/App',
       },
       shared: [
         'react',
@@ -26,5 +27,10 @@ export default defineConfig({
     target: 'esnext',
     minify: false,
     cssCodeSplit: false,
+  },
+  preview: {
+    port: 5002,
+    strictPort: true,
+    cors: true,
   },
 });

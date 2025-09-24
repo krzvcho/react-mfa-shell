@@ -82,7 +82,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <div>
       {/* Top Bar */}
       <AppBar
         position="fixed"
@@ -133,14 +133,14 @@ export default function AdminLayout() {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           transition: 'margin .3s',
+          marginLeft: open ? `${drawerWidth}px` : 0,
         }}
       >
         <Toolbar />
         {navigation.state === 'loading' && <CircularProgress />}
         <Outlet />
       </Box>
-    </Box>
+    </div>
   );
 }

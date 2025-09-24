@@ -11,6 +11,7 @@ import {
   Paper,
   Avatar,
   Typography,
+  Tooltip,
 } from '@mui/material';
 
 const columns = [
@@ -22,7 +23,7 @@ const columns = [
   { id: 'cca2', label: 'Code' },
 ];
 
-const RouteLoader: React.FC = () => {
+const StandardTable: React.FC = () => {
   const countries = useLoaderData() as Country[];
 
   return (
@@ -30,7 +31,7 @@ const RouteLoader: React.FC = () => {
       component={Paper}
       sx={{
         mt: 2,
-        maxHeight: 'calc(100vh - 170px)', // 64px margin from bottom
+        maxHeight: 'calc(100vh - 130px)', // 64px margin from bottom
         minHeight: 200,
         overflowY: 'auto',
       }}
@@ -39,7 +40,10 @@ const RouteLoader: React.FC = () => {
         <TableHead>
           <TableRow>
             {columns.map((col) => (
-              <TableCell key={col.id} align={col.id === 'flag' ? 'center' : 'left'}>
+              <TableCell
+                key={col.id}
+                align={col.id === 'flag' ? 'center' : 'left'}
+              >
                 <Typography variant="subtitle2">{col.label}</Typography>
               </TableCell>
             ))}
@@ -50,11 +54,16 @@ const RouteLoader: React.FC = () => {
             <TableRow key={country.cca2 || country.name.common}>
               <TableCell align="center">
                 {country.flags?.png ? (
-                  <Avatar
-                    alt={country.flags.alt}
-                    src={country.flags.png}
-                    sx={{ width: 32, height: 32, mx: 'auto' }}
-                  />
+                  <Tooltip
+                    title={country.flags.alt || country.name.common}
+                    arrow
+                  >
+                    <Avatar
+                      alt={country.flags.alt}
+                      src={country.flags.png}
+                      sx={{ width: 32, height: 32, mx: 'auto' }}
+                    />
+                  </Tooltip>
                 ) : (
                   country.flag || ''
                 )}
@@ -62,7 +71,9 @@ const RouteLoader: React.FC = () => {
               <TableCell>{country.name.common}</TableCell>
               <TableCell>{country.region}</TableCell>
               <TableCell>{country.capital?.join(', ') || ''}</TableCell>
-              <TableCell>{country.population?.toLocaleString() || ''}</TableCell>
+              <TableCell>
+                {country.population?.toLocaleString() || ''}
+              </TableCell>
               <TableCell>{country.cca2}</TableCell>
             </TableRow>
           ))}
@@ -72,4 +83,4 @@ const RouteLoader: React.FC = () => {
   );
 };
 
-export default RouteLoader;
+export default StandardTable;

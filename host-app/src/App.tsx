@@ -4,8 +4,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { fetchIndependentCountries } from './api/restcountries';
 import AdminLayout from './layouts/HostAppLayout';
 import ReactForms from './pages/ReactForms';
-import RouteLoader from './pages/RouteLoader';
-import './App.css';
+import LoaderWrapper from './pages/RouteLoader/LoaderWrapper';
+import StandardTable from './pages/RouteLoader/StandardTable';
+import VirtualizedTable from './pages/RouteLoader/VirtualizedTable';
 
 const router = createBrowserRouter([
   {
@@ -14,8 +15,18 @@ const router = createBrowserRouter([
       { path: '/', element: <span> root </span> },
       {
         path: '/loader',
-        element: <RouteLoader />,
-        loader: fetchIndependentCountries,
+        element: <LoaderWrapper />,
+        children: [
+          {
+            index: true,
+            element: <StandardTable />,
+            loader: fetchIndependentCountries,
+          },
+          {
+            path: 'virtualized',
+            element: <VirtualizedTable />,
+          },
+        ],
       },
       {
         path: '/react-forms',

@@ -1,19 +1,88 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import { Menu as MenuIcon, Dashboard, Settings, Newspaper  } from "@mui/icons-material";
-import { Link as RouterLink, Outlet } from "react-router-dom";
+import React from 'react';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Drawer,
+  List,
+  ListItemIcon,
+  ListItemText,
+  Box,
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+  Menu as MenuIcon,
+  Dashboard,
+  Settings,
+  Newspaper,
+  FrontLoader,
+} from '@mui/icons-material';
+import { Link as RouterLink, Outlet, useNavigation } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const drawerWidth = 240;
 
+// Styled ListItem with primary color for link
+const StyledListItem = styled(RouterLink)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none',
+  color: theme.palette.primary.main,
+  padding: theme.spacing(1.5, 2),
+  borderRadius: theme.shape.borderRadius,
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+    color: theme.palette.primary.dark,
+    textDecoration: 'none',
+  },
+  '&.active': {
+    backgroundColor: theme.palette.action.selected,
+    color: theme.palette.primary.dark,
+  },
+  span: {
+    textAlign: 'left',
+  },
+}));
+
+const menuItems = [
+  {
+    to: '/',
+    icon: <Dashboard />,
+    label: 'Root',
+  },
+  {
+    to: '/loader',
+    icon: <FrontLoader />,
+    label: 'Loader demo',
+  },
+  {
+    to: '/react-forms',
+    icon: <Newspaper />,
+    label: 'React Forms',
+  },
+  {
+    to: '/remote-app',
+    icon: <Settings />,
+    label: 'Remote App',
+  },
+  {
+    to: '/remote-app-datarouter',
+    icon: <Settings />,
+    label: 'Remote App Datarouter',
+  },
+];
+
 export default function AdminLayout() {
   const [open, setOpen] = React.useState(true);
+  const navigation = useNavigation();
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: 'flex' }}>
       {/* Top Bar */}
       <AppBar
         position="fixed"
@@ -31,7 +100,7 @@ export default function AdminLayout() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            MFA Host Admin
+            Upskilling playground
           </Typography>
         </Toolbar>
       </AppBar>
@@ -41,40 +110,22 @@ export default function AdminLayout() {
         variant="persistent"
         open={open}
         sx={{
-          width: drawerWidth,
+          width: open ? drawerWidth : 0,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
+            width: open ? drawerWidth : 0,
+            boxSizing: 'border-box',
           },
         }}
       >
         <Toolbar />
         <List>
-          <ListItem component={RouterLink} to="/">
-            <ListItemIcon>
-              <Dashboard />
-            </ListItemIcon>
-            <ListItemText primary="Root" />
-          </ListItem>
-          <ListItem component={RouterLink} to="/react-forms">
-            <ListItemIcon>
-              <Newspaper />
-            </ListItemIcon>
-            <ListItemText primary="React Forms" />
-          </ListItem>
-          <ListItem component={RouterLink} to="/remote-app">
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="RemoteApp" />
-          </ListItem>
-          <ListItem component={RouterLink} to="/remote-app-datarouter">
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="RemoteAppDatarouter" />
-          </ListItem>
+          {menuItems.map((item) => (
+            <StyledListItem to={item.to} key={item.to}>
+              <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.label} />
+            </StyledListItem>
+          ))}
         </List>
       </Drawer>
 
@@ -83,12 +134,11 @@ export default function AdminLayout() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          transition: "margin .3s",
-          marginLeft: open ? `${drawerWidth}px` : 0,
+          transition: 'margin .3s',
         }}
       >
         <Toolbar />
+        {navigation.state === 'loading' && <CircularProgress />}
         <Outlet />
       </Box>
     </Box>

@@ -1,8 +1,10 @@
 import { RemoteComponentWrapper } from './components/RemoteComponentWrapper';
 import { RemoteComponentWrapperDatarouter } from './components/RemoteComponentWrapperDatarouter';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { fetchIndependentCountries } from './api/restcountries';
 import AdminLayout from './layouts/HostAppLayout';
 import ReactForms from './pages/ReactForms';
+import RouteLoader from './pages/RouteLoader';
 import './App.css';
 
 const router = createBrowserRouter([
@@ -10,9 +12,26 @@ const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       { path: '/', element: <span> root </span> },
-      { path: '/react-forms', element: <ReactForms /> },
-      { path: '/remote-app/*', element: <RemoteComponentWrapper /> },
-      { path: '/remote-app-datarouter/*', element: <RemoteComponentWrapperDatarouter /> },
+      {
+        path: '/loader',
+        element: <RouteLoader />,
+        loader: fetchIndependentCountries,
+      },
+      {
+        path: '/react-forms',
+        element: <ReactForms />,
+        errorElement: <div>Error loading React Forms</div>,
+      },
+      {
+        path: '/remote-app/*',
+        element: <RemoteComponentWrapper />,
+        errorElement: <div>Error loading Remote App</div>,
+      },
+      {
+        path: '/remote-app-datarouter/*',
+        element: <RemoteComponentWrapperDatarouter />,
+        errorElement: <div>Error loading Remote App Datarouter</div>,
+      },
     ],
   },
 ]);

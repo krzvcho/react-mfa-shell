@@ -100,7 +100,7 @@ export default function AdminLayout() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Upskilling playground
+            Upskilling playground {navigation.state}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -134,6 +134,7 @@ export default function AdminLayout() {
         component="main"
         sx={{
           transition: 'margin .3s',
+          padding: 2,
           marginLeft: open ? `${drawerWidth}px` : 0,
         }}
       >

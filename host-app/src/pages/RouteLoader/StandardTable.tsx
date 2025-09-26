@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 import type { Country } from '../../api/restcountries';
 import {
   Table,
@@ -24,8 +24,8 @@ const columns = [
 ];
 
 const StandardTable: React.FC = () => {
-  const countries = useLoaderData() as Country[];
-
+  const countries = useRouteLoaderData('loader-main-route') as Country[];
+  
   return (
     <TableContainer
       component={Paper}

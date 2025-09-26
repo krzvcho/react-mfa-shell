@@ -7,6 +7,8 @@ import ReactForms from './pages/ReactForms';
 import LoaderWrapper from './pages/RouteLoader/LoaderWrapper';
 import StandardTable from './pages/RouteLoader/StandardTable';
 import VirtualizedTable from './pages/RouteLoader/VirtualizedTable';
+import ErrorComponent from './components/ErrorComponent';
+import './styles.css';
 
 const router = createBrowserRouter([
   {
@@ -16,11 +18,13 @@ const router = createBrowserRouter([
       {
         path: '/loader',
         element: <LoaderWrapper />,
+        errorElement: <ErrorComponent />,
+        loader: fetchIndependentCountries,
+        id: 'loader-main-route',
         children: [
           {
             index: true,
             element: <StandardTable />,
-            loader: fetchIndependentCountries,
           },
           {
             path: 'virtualized',

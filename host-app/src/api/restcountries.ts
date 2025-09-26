@@ -51,7 +51,12 @@ export async function fetchIndependentCountries(): Promise<Country[]> {
   const url = 'https://restcountries.com/v3.1/independent?status=true';
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error('Failed to fetch countries');
+    throw new Response("Failed to load countries", {
+      status: response.status,
+      statusText: 'Failed to fetch countries',
+    });
+
+    //throw new Error('Failed to fetch countries');
   }
   const data = await response.json();
   return data;

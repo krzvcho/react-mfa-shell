@@ -9,6 +9,9 @@ import StandardTable from './pages/RouteLoader/StandardTable';
 import VirtualizedTable from './pages/RouteLoader/VirtualizedTable';
 import ErrorComponent from './components/ErrorComponent';
 import './styles.css';
+import { getUser } from './api/usermock';
+import UserContainer, { deleteUser } from './pages/User';
+import EditUserForm, { editUser } from './pages/User/Edit';
 
 const router = createBrowserRouter([
   {
@@ -30,6 +33,16 @@ const router = createBrowserRouter([
             path: 'virtualized',
             element: <VirtualizedTable />,
           },
+        ],
+      },
+      {
+        path: '/user',
+        id: 'user-container-route',
+        loader: getUser,
+        errorElement: <ErrorComponent />,
+        children: [
+          { index: true, element: <UserContainer />, action: deleteUser },
+          { path: 'edit', element: <EditUserForm />, action: editUser },
         ],
       },
       {

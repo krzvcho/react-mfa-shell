@@ -17,6 +17,7 @@ import {
   Settings,
   Newspaper,
   FrontLoader,
+  Person,
 } from '@mui/icons-material';
 import { Link as RouterLink, Outlet, useNavigation } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -56,6 +57,7 @@ const menuItems = [
     icon: <FrontLoader />,
     label: 'Loader demo',
   },
+  { to: '/user', icon: <Person />, label: 'User' },
   {
     to: '/react-forms',
     icon: <Newspaper />,

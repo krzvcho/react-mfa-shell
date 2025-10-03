@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import dayjs from 'dayjs';
 import type { MockUser } from '../../api/usermock';
 import {
   Form,
@@ -6,6 +7,10 @@ import {
   useRouteLoaderData,
   useActionData,
 } from 'react-router-dom';
+// import dayjs from 'dayjs';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 const EditUserForm: React.FC = () => {
   const user = useRouteLoaderData('user-container-route') as MockUser;
@@ -16,6 +21,7 @@ const EditUserForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
+    console.log(name, value, type, checked);
     setForm((prev) => {
       let newValue: any = value;
       if (type === 'checkbox') {
@@ -31,6 +37,14 @@ const EditUserForm: React.FC = () => {
       };
     });
   };
+  // const handleDateTimeChange = (newValue: dayjs.Dayjs | null) => {
+  //   if (newValue) {
+  //     setForm((prev) => ({
+  //       ...prev,
+  //       createdAt: newValue.toISOString(),
+  //     }));
+  //   }
+  // };
 
   return (
     <Form method="post">
@@ -41,69 +55,67 @@ const EditUserForm: React.FC = () => {
           ))}
         </ul>
       )}
-      <div>
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={form.username}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Age:
-          <input
-            type="number"
-            name="age"
-            value={form.age}
-            onChange={handleChange}
-            min={0}
-            required
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Active:
-          <input
-            type="checkbox"
-            name="isActive"
-            checked={form.isActive}
-            onChange={handleChange}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Created At:
-          <input
-            type="datetime-local"
+      <Box
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: 300 }}
+      >
+        <TextField
+          label="Username"
+          variant="outlined"
+          type="text"
+          name="username"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Email"
+          variant="outlined"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Age"
+          variant="outlined"
+          type="number"
+          name="age"
+          value={form.age}
+          onChange={handleChange}
+          slotProps={{ htmlInput: { min: 0, max: 99 } }}
+          required
+        />
+        <FormControlLabel
+          label="Active"
+          control={
+            <Checkbox
+              checked={form.isActive}
+              name="isActive"
+              onChange={handleChange}
+            />
+          }
+        />
+        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateTimePicker
+            label="Created at"
             name="createdAt"
-            value={form.createdAt.slice(0, 16)}
-            onChange={handleChange}
-            required
+            value={dayjs(form.createdAt)}
+            onChange={handleDateTimeChange}
           />
-        </label>
-      </div>
-      <button type="submit" disabled={isSubmitting}>
-        Save
-      </button>
+        </LocalizationProvider> */}
+        <TextField
+          label="Created at"
+          name="createdAt"
+          type="datetime-local"
+          value={form.createdAt ? dayjs(form.createdAt).format('YYYY-MM-DDTHH:mm') : ''}
+          onChange={handleChange}
+          fullWidth
+        />
+        <Button variant="outlined" type="submit" disabled={isSubmitting}>
+          Save
+        </Button>
+      </Box>
     </Form>
   );
 };
@@ -112,6 +124,7 @@ export default EditUserForm;
 
 // data functions
 import { redirect, type ActionFunctionArgs } from 'react-router-dom';
+import { Box, Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 
 export async function editUser({
   request,

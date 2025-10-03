@@ -21,10 +21,12 @@ function getRandomEmail(username: string): string {
   return `${username}@${domains[getRandomInt(0, domains.length - 1)]}`;
 }
 
+import dayjs from 'dayjs';
 function getRandomDate(): string {
   const start = new Date(2020, 0, 1).getTime();
   const end = new Date().getTime();
-  return new Date(getRandomInt(start, end)).toISOString();
+  // Format as 'YYYY-MM-DDTHH:mm:ss' (local time, no Z)
+  return dayjs(getRandomInt(start, end)).format('YYYY-MM-DDTHH:mm:ss');
 }
 
 const mockUser: MockUser = {

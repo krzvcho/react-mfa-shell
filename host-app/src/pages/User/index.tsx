@@ -1,4 +1,5 @@
 import React from 'react';
+import dayjs from 'dayjs';
 import { Card, CardActions, CardHeader, IconButton } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -51,7 +52,7 @@ const UserContainer: React.FC = () => {
         <strong>Status:</strong> {user.isActive ? 'Active' : 'Inactive'}
       </p>
       <p style={{ fontSize: '0.9em', color: '#888' }}>
-        <strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}
+        <strong>Joined:</strong> {dayjs(user.createdAt).format('YYYY-MM-DD HH:mm:ss')}
       </p>
       <p style={{ fontSize: '0.8em', color: '#bbb' }}>User ID: {user.id}</p>
     </Card>

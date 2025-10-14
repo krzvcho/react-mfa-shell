@@ -12,12 +12,14 @@ import './styles.css';
 import { getUser } from './api/usermock';
 import UserContainer, { deleteUser } from './pages/User';
 import EditUserForm, { editUser } from './pages/User/Edit';
+import Counter from './pages/Counter/Counter';
 
 const router = createBrowserRouter([
   {
     element: <AdminLayout />,
     children: [
       { path: '/', element: <span> root </span> },
+      { path: '/counter', element: <Counter /> },
       {
         path: '/loader',
         element: <LoaderWrapper />,

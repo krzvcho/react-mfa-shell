@@ -39,12 +39,19 @@ export function getRecords(): Promise<BloodPressureRecord[]> {
 }
 
 export function convertBPDataForLineChart(data: BloodPressureRecord[]) {
-  const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  // sort by measuredAt ascending (oldest -> newest)
+  const sortedData = [...data].sort(
+    (a, b) => new Date(a.measuredAt).getTime() - new Date(b.measuredAt).getTime()
+  );
 
-  const xData = data.map((item) => {
+  // use ISO date (YYYY-MM-DD) for x axis labels
+  const xData = sortedData.map((item) => {
     const date = new Date(item.measuredAt);
-    return days[date.getDay()];
+    return date.toISOString().slice(0, 10); // e.g. "2025-10-10"
   });
+
+  // use the sorted data for the subsequent mappings
+  data = sortedData;
 
   const systolicData = data.map((item) => item.systolic);
   const diastolicData = data.map((item) => item.diastolic);

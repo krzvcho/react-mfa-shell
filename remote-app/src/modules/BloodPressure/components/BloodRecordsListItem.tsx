@@ -12,7 +12,7 @@ const BloodRecordsListItem: React.FC<BloodRecordsListItemProps> = ({
   return (
     <Card
       variant="outlined"
-      sx={{ padding: 0.5, mb: 1, textAlign: 'left' }}
+      sx={{ padding: 0.5, mb: 1, textAlign: 'left', width: '100%' }}
     >
       {record.systolic} / {record.diastolic} mmHg
       <br />
@@ -24,3 +24,4 @@ const BloodRecordsListItem: React.FC<BloodRecordsListItemProps> = ({
 };
 
 export default BloodRecordsListItem;
+

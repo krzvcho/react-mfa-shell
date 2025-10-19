@@ -12,7 +12,6 @@ interface BloodRecordsListProps {
 const BloodRecordsLineChart: React.FC<BloodRecordsListProps> = ({
   bloodPressureRecords,
 }) => {
-  console.log(bloodPressureRecords);
   const {
     xData,
     systolicData,

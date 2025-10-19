@@ -1,34 +1,34 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export interface BloodPressureRecord {
-  id: number;
+  id: number | string;
   systolic: number;
   diastolic: number;
   pulse: number;
   measuredAt: string; // ISO date string
 }
 
-const mockBloodPressureRecords: BloodPressureRecord[] = [
-  {
-    id: 1,
-    systolic: 120,
-    diastolic: 80,
-    pulse: 72,
-    measuredAt: '2025-10-10T08:30:00Z',
-  },
-  {
-    id: 2,
-    systolic: 130,
-    diastolic: 85,
-    pulse: 75,
-    measuredAt: '2025-10-11T09:00:00Z',
-  },
-  {
-    id: 3,
-    systolic: 125,
-    diastolic: 82,
-    pulse: 70,
-    measuredAt: '2025-10-12T07:45:00Z',
-  },
-];
+const STORAGE_KEY = 'bloodPressureRecords';
+
+const defaultRecords: BloodPressureRecord[] = [];
+
+// Initialize from localStorage or use default records
+const initializeRecords = (): BloodPressureRecord[] => {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      return JSON.parse(stored);
+    } catch (error) {
+      console.error('Failed to parse stored records:', error);
+      return defaultRecords;
+    }
+  }
+  // If nothing in localStorage, save defaults and return them
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultRecords));
+  return defaultRecords;
+};
+
+const mockBloodPressureRecords: BloodPressureRecord[] = initializeRecords();
 
 export function getRecords(): Promise<BloodPressureRecord[]> {
   return new Promise((resolve) => {
@@ -57,4 +57,18 @@ export function convertBPDataForLineChart(data: BloodPressureRecord[]) {
   const diastolicData = data.map((item) => item.diastolic);
 
   return { xData, systolicData, diastolicData };
+}
+
+export function saveRecord(record: Omit<BloodPressureRecord, 'id'>): Promise<BloodPressureRecord[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newRecord: BloodPressureRecord = {
+        ...record,
+        id: uuidv4()
+      };
+      mockBloodPressureRecords.push(newRecord);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockBloodPressureRecords));
+      resolve(mockBloodPressureRecords);
+    }, 1500); // 1.5 second delay to simulate backend save
+  });
 }

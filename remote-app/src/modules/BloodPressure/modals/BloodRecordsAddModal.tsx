@@ -15,7 +15,7 @@ import { validateFormData } from './utils';
 type BloodRecordsAddModalProps = {
   open: boolean;
   onClose: () => void;
-  onSave?: (data?: any) => void;
+  onSave?: (data?: any) => Promise<void> | Promise<any>;
   title?: string;
 };
 type FormErrors = Record<string, string> | null;
@@ -65,10 +65,10 @@ const BloodRecordsAddModal: React.FC<BloodRecordsAddModalProps> = ({
   onSave,
   title = 'Add Blood Pressure Record',
 }) => {
-  const handleSave = (
+  const handleSave = async (
     _prevState: any,
     formData: FormData
-  ): { errors: FormErrors; enteredValues: Record<string, any> } => {
+  ): Promise<{ errors: FormErrors; enteredValues: Record<string, any> }> => {
     let errors: Record<string, string> = {};
 
     const rawSystolic = formData.get('systolic');
@@ -106,15 +106,30 @@ const BloodRecordsAddModal: React.FC<BloodRecordsAddModalProps> = ({
       };
     }
 
-    // Valid -> pass to onSave
-    onSave?.({
-      systolic,
-      diastolic,
-      pulse,
-      measuredAt: measuredAt!.toISOString(),
-    });
-
-    return { errors: null, enteredValues: {} };
+    // Valid -> pass to onSave and await to keep pending state during async save
+    try {
+      if (onSave) {
+        await onSave({
+          systolic,
+          diastolic,
+          pulse,
+          measuredAt: measuredAt!.toISOString(),
+        });
+      }
+      return { errors: null, enteredValues: {} };
+    } catch (e) {
+      // If save fails, keep values so user can retry; log for now
+      console.error('Save failed:', e);
+      return {
+        errors: null,
+        enteredValues: {
+          systolic: rawSystolic,
+          diastolic: rawDiastolic,
+          pulse: rawPulse,
+          measuredAt: rawMeasuredAt,
+        },
+      };
+    }
   };
 
   const [formState, formAction, pending] = useActionState(handleSave, {
